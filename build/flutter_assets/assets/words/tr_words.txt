@@ -1,0 +1,12 @@
+kalem
+kitap
+bilgisayar
+masa
+bardak
+telefon
+merhaba
+çiçek
+kelebek
+bulut
+orman
+tebeşir
