@@ -24,10 +24,50 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final game = context.watch<GameProvider>();
+Widget build(BuildContext context) {
+  final game = context.watch<GameProvider>();
 
-    return Scaffold(
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    if (game.gameFinished) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return AlertDialog(
+            backgroundColor: Colors.black87,
+            title: Text(
+              game.playerWon
+                  ? "🎉 Kazandın!"
+                  : "💀 Kaybettin!",
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            content: Text(
+              game.playerWon
+                  ? "Kelimeyi doğru bildin."
+                  : "Doğru kelime: ${game.currentWord.toLowerCase()}",
+              style: const TextStyle(
+                color: Colors.white70,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+
+                  await game.startGame();
+                },
+                child: const Text("Tekrar Oyna"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  });
+
+  return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -76,4 +116,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  
 }
